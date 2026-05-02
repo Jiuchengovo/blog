@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(curl -s http://localhost:3001/blog)",
+      "Bash(curl -s http://localhost:3001/blog/hello-world)",
+      "Bash(curl -sS http://localhost:3001/)",
+      "Bash(netstat -ano)",
+      "Bash(npx next *)",
+      "Bash(curl -sS http://localhost:3002/)",
+      "Bash(curl -sS http://localhost:3000/)"
+    ]
+  }
+}
