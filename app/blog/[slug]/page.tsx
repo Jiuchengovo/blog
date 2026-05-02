@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 import type { Metadata } from "next";
 import styles from "./markdown.module.css";
+import Comment from "@/app/components/Comment";
 
 export async function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -63,7 +64,7 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F5F5F3]">
       <article className="mx-auto max-w-2xl px-6 py-12 sm:py-16">
         <Link
           href="/blog"
@@ -85,29 +86,35 @@ export default async function BlogPostPage({
           Back to all posts
         </Link>
 
-        <header className="mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933] mb-4">
-            {post.title}
-          </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            <time dateTime={post.date} className="text-[#6B7280]">
-              Published {formatDate(post.date)}
-            </time>
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {post.tags.map((tag) => (
-                  <TagBadge key={tag} tag={tag} />
-                ))}
-              </div>
-            )}
-          </div>
-        </header>
+        <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm">
+          <header className="mb-12">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933] mb-4">
+              {post.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              <time dateTime={post.date} className="text-[#6B7280]">
+                Published {formatDate(post.date)}
+              </time>
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {post.tags.map((tag) => (
+                    <TagBadge key={tag} tag={tag} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </header>
 
-        <div
-          className={styles.markdown}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+          <div
+            className={styles.markdown}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </div>
       </article>
+
+      <div className="mx-auto max-w-2xl px-6 pb-16">
+        <Comment />
+      </div>
     </div>
   );
 }
