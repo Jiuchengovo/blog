@@ -7,6 +7,12 @@ import rehypeStringify from "rehype-stringify";
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
+export interface PostHeading {
+  level: number;
+  text: string;
+  id: string;
+}
+
 export interface PostMetadata {
   slug: string;
   title: string;
@@ -17,6 +23,52 @@ export interface PostMetadata {
 
 export interface Post extends PostMetadata {
   content: string;
+  headings: PostHeading[];
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function extractHeadings(markdown: string): PostHeading[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: PostHeading[] = [];
+  let match;
+  while ((match = headingRegex.exec(markdown)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim();
+    headings.push({ level, text, id: slugify(text) });
+  }
+  return headings;
+}
+
+/** Custom rehype plugin that adds id attributes to h2/h3 elements */
+function rehypeAddHeadingIds() {
+  return (tree: any) => {
+    function visit(node: any) {
+      if (
+        node.type === "element" &&
+        (node.tagName === "h2" || node.tagName === "h3")
+      ) {
+        if (!node.properties) node.properties = {};
+        if (!node.properties.id) {
+          const text =
+            node.children
+              ?.filter((c: any) => c.type === "text")
+              .map((c: any) => c.value)
+              .join("") || "";
+          node.properties.id = slugify(text);
+        }
+      }
+      if (node.children) {
+        node.children.forEach(visit);
+      }
+    }
+    visit(tree);
+  };
 }
 
 export function getAllPosts(): PostMetadata[] {
@@ -54,12 +106,15 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   }
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+  const { data, content: rawContent } = matter(fileContents);
+
+  const headings = extractHeadings(rawContent);
 
   const processedContent = await remark()
     .use(remarkRehype)
+    .use(rehypeAddHeadingIds)
     .use(rehypeStringify)
-    .process(content);
+    .process(rawContent);
   const contentHtml = String(processedContent.value);
 
   return {
@@ -69,5 +124,21 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     excerpt: data.excerpt ?? "",
     tags: data.tags ?? [],
     content: contentHtml,
+    headings,
+  };
+}
+
+export function getPrevNextPosts(
+  slug: string
+): {
+  prev: PostMetadata | null;
+  next: PostMetadata | null;
+} {
+  const allPosts = getAllPosts();
+  const index = allPosts.findIndex((p) => p.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  return {
+    prev: index > 0 ? allPosts[index - 1] : null,
+    next: index < allPosts.length - 1 ? allPosts[index + 1] : null,
   };
 }
