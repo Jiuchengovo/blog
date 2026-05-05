@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Alex — Developer & Designer",
-    template: "%s | Alex",
+    default: "Jiucheng's Home",
+    template: "%s | Jiucheng's Home",
   },
   description:
     "Personal blog and portfolio. Thoughts on software, design, and building things.",
