@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { toggle, getStatus } from "../controllers/likeController.js";
-import auth from "../middlewares/auth.js";
+import { toggleInteraction, getStatus } from "../controllers/likeController.js";
+import auth, { softAuth } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.post("/:postId/toggle", auth, toggle);
-router.get("/:postId/status", auth, getStatus);
+router.post("/:postSlug/toggle", auth, toggleInteraction);
+router.get("/:postSlug/status", softAuth, getStatus);
 
 export default router;

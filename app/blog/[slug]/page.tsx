@@ -70,7 +70,7 @@ export default async function BlogPostPage({
 
   return (
     <div className="min-h-screen bg-[#F5F5F3]">
-      <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-6 pt-28 sm:pt-32 pb-20 sm:pb-24">
         <div className="flex gap-10">
           {/* Left: Table of Contents */}
           <aside className="w-56 shrink-0 hidden lg:block">
@@ -155,7 +155,7 @@ export default async function BlogPostPage({
             {/* Comments */}
             <Reveal delay={400}>
               <div className="mt-10">
-                <Comment />
+                <Comment postSlug={post.slug} />
               </div>
             </Reveal>
           </article>

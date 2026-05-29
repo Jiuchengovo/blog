@@ -6,9 +6,31 @@ export const getByPost = async (req, res, next) => {
 
     const comments = await Comment.find({ postSlug })
       .populate("author", "username avatar")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
-    res.json({ comments });
+    const commentMap = {};
+    const roots = [];
+
+    for (const c of comments) {
+      commentMap[c._id] = { ...c, replies: [] };
+    }
+
+    for (const c of comments) {
+      const node = commentMap[c._id];
+      if (c.parent) {
+        const parentId = c.parent.toString();
+        if (commentMap[parentId]) {
+          commentMap[parentId].replies.push(node);
+        } else {
+          roots.push(node);
+        }
+      } else {
+        roots.push(node);
+      }
+    }
+
+    res.json({ comments: roots });
   } catch (err) {
     next(err);
   }
@@ -21,7 +43,7 @@ export const create = async (req, res, next) => {
 
     const comment = await Comment.create({
       postSlug,
-      author: req.userId,
+      author: req.user.id,
       content,
       parent: parent || null,
     });
@@ -41,11 +63,14 @@ export const remove = async (req, res, next) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    if (comment.author.toString() !== req.userId) {
+    if (comment.author.toString() !== req.user.id) {
       return res.status(403).json({ message: "You can only delete your own comments" });
     }
 
-    await comment.deleteOne();
+    await Comment.deleteMany({
+      $or: [{ _id: comment._id }, { parent: comment._id }],
+    });
+
     res.json({ message: "Comment deleted" });
   } catch (err) {
     next(err);

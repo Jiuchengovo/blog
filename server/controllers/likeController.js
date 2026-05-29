@@ -1,30 +1,27 @@
-import Like from "../models/Like.js";
-import Post from "../models/Post.js";
+import Interaction from "../models/Like.js";
 
-export const toggle = async (req, res, next) => {
+export const toggleInteraction = async (req, res, next) => {
   try {
-    const { postId } = req.params;
-    const userId = req.userId;
+    const { postSlug } = req.params;
+    const { type } = req.body;
+    const userId = req.user.id;
 
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+    if (!["like", "favorite"].includes(type)) {
+      return res.status(400).json({ message: "Type must be 'like' or 'favorite'" });
     }
 
-    const existing = await Like.findOne({ user: userId, post: postId });
+    const existing = await Interaction.findOne({ user: userId, postSlug, type });
 
     if (existing) {
       await existing.deleteOne();
-      post.likesCount = Math.max(0, post.likesCount - 1);
-      await post.save();
-      return res.json({ liked: false, likesCount: post.likesCount });
+      const count = await Interaction.countDocuments({ postSlug, type });
+      return res.json({ active: false, count });
     }
 
-    await Like.create({ user: userId, post: postId });
-    post.likesCount += 1;
-    await post.save();
+    await Interaction.create({ user: userId, postSlug, type });
+    const count = await Interaction.countDocuments({ postSlug, type });
 
-    res.json({ liked: true, likesCount: post.likesCount });
+    res.json({ active: true, count });
   } catch (err) {
     next(err);
   }
@@ -32,15 +29,25 @@ export const toggle = async (req, res, next) => {
 
 export const getStatus = async (req, res, next) => {
   try {
-    const { postId } = req.params;
-    const userId = req.userId;
+    const { postSlug } = req.params;
+    const userId = req.user?.id;
 
-    const liked = await Like.exists({ user: userId, post: postId });
-    const post = await Post.findById(postId).select("likesCount");
+    const [likesCount, favoritesCount, liked, favorited] = await Promise.all([
+      Interaction.countDocuments({ postSlug, type: "like" }),
+      Interaction.countDocuments({ postSlug, type: "favorite" }),
+      userId
+        ? Interaction.exists({ user: userId, postSlug, type: "like" })
+        : Promise.resolve(false),
+      userId
+        ? Interaction.exists({ user: userId, postSlug, type: "favorite" })
+        : Promise.resolve(false),
+    ]);
 
     res.json({
+      likesCount,
+      favoritesCount,
       liked: !!liked,
-      likesCount: post?.likesCount ?? 0,
+      favorited: !!favorited,
     });
   } catch (err) {
     next(err);

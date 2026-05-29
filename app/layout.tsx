@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/Navbar";
 import PageTransition from "./components/PageTransition";
+import { AuthProvider } from "./context/AuthContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,8 +35,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F5F5F3]">
-        <Navbar />
-        <main className="flex-1"><PageTransition>{children}</PageTransition></main>
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-1"><PageTransition>{children}</PageTransition></main>
+        </AuthProvider>
       </body>
     </html>
   );

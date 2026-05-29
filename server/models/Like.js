@@ -1,15 +1,20 @@
 import mongoose from "mongoose";
 
-const likeSchema = new mongoose.Schema(
+const interactionSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    post: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
+    postSlug: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    type: {
+      type: String,
+      enum: ["like", "favorite"],
       required: true,
     },
   },
@@ -18,6 +23,6 @@ const likeSchema = new mongoose.Schema(
   }
 );
 
-likeSchema.index({ user: 1, post: 1 }, { unique: true });
+interactionSchema.index({ user: 1, postSlug: 1, type: 1 }, { unique: true });
 
-export default mongoose.model("Like", likeSchema);
+export default mongoose.model("Interaction", interactionSchema);
