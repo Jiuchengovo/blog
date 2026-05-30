@@ -11,7 +11,10 @@ import errorHandler from "./middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://jiuchengovo.me", "https://www.jiuchengovo.me"],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
