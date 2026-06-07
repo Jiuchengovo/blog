@@ -387,30 +387,29 @@ function CommentItem({
   const { user, token } = useAuth();
   const [replying, setReplying] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
+  const [cliked, setCliked] = useState(false);
+  const [clikesCount, setClikesCount] = useState(0);
 
-  // Fetch comment like status
-  useEffect(() => {
-    const fetchLike = async () => {
-      try {
-        const headers: Record<string, string> = {};
-        if (token) headers.Authorization = `Bearer ${token}`;
-        const res = await fetch(
-          `${API}/likes/${encodeURIComponent(comment._id)}/status?targetType=comment`,
-          { headers }
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setLiked(data.liked);
-          setLikesCount(data.likesCount);
-        }
-      } catch {}
-    };
-    fetchLike();
-  }, [comment._id, token]);
+  // Fetch comment like status (same pattern as InteractionBar)
+  const fetchCLike = async () => {
+    try {
+      const headers: Record<string, string> = {};
+      if (token) headers.Authorization = `Bearer ${token}`;
+      const res = await fetch(
+        `${API}/likes/${encodeURIComponent(comment._id)}/status?targetType=comment`,
+        { headers }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setCliked(data.liked);
+        setClikesCount(data.likesCount);
+      }
+    } catch {}
+  };
 
-  const handleLike = async () => {
+  useEffect(() => { fetchCLike(); }, [comment._id, token]);
+
+  const toggleCLike = async () => {
     if (!token) {
       window.location.href = "/login";
       return;
@@ -427,8 +426,8 @@ function CommentItem({
       if (res.status === 401) { localStorage.removeItem("token"); return; }
       if (res.ok) {
         const data = await res.json();
-        setLiked(data.active);
-        setLikesCount(data.count);
+        setCliked(data.active);
+        setClikesCount(data.count);
       }
     } catch {}
   };
@@ -478,16 +477,18 @@ function CommentItem({
             </div>
             <p className="text-sm text-[#4a5563] leading-relaxed whitespace-pre-wrap">{comment.content}</p>
             <div className="flex items-center gap-3 mt-1.5">
-              {/* Like */}
+              {/* Like (same pattern as blog like button) */}
               <button
-                onClick={handleLike}
-                style={{ color: liked ? "#ef4444" : undefined }}
-                className="inline-flex items-center gap-1 text-xs text-[#9CA3AF] hover:text-red-400 transition-colors"
+                onClick={() => toggleCLike()}
+                style={{ color: cliked ? "#ef4444" : "#9CA3AF" }}
+                className="inline-flex items-center gap-1 text-xs transition-colors"
+                onMouseEnter={(e) => { if (!cliked) e.currentTarget.style.color = "#f87171"; }}
+                onMouseLeave={(e) => { if (!cliked) e.currentTarget.style.color = "#9CA3AF"; }}
               >
-                <svg className="size-3.5" fill={liked ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <svg className="size-3.5" fill={cliked ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                 </svg>
-                {likesCount > 0 && <span>{likesCount}</span>}
+                {clikesCount > 0 && <span>{clikesCount}</span>}
               </button>
 
               {token && (
