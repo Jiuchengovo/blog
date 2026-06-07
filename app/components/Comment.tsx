@@ -184,7 +184,10 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
   useEffect(() => { fetchStatus(); }, [fetchStatus]);
 
   const toggle = async (type: "like" | "favorite") => {
-    if (!token) return;
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
     try {
       const res = await fetch(`${API}/likes/${encodeURIComponent(postSlug)}/toggle`, {
         method: "POST",
@@ -408,7 +411,10 @@ function CommentItem({
   }, [comment._id, token]);
 
   const handleLike = async () => {
-    if (!token) return;
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
     try {
       const res = await fetch(`${API}/likes/${encodeURIComponent(comment._id)}/toggle`, {
         method: "POST",
