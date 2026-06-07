@@ -326,15 +326,23 @@ function CommentList({ postSlug }: { postSlug: string }) {
   const { token } = useAuth();
   const [comments, setComments] = useState<CommentData[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const fetchComments = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/comments/post/${encodeURIComponent(postSlug)}`);
+      const url = `${API}/comments/post/${encodeURIComponent(postSlug)}`;
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         setComments(data.comments || []);
+        setFetchError(null);
+      } else {
+        setFetchError(`HTTP ${res.status}: ${res.statusText}`);
       }
-    } catch {}
+    } catch (e: any) {
+      setFetchError(e.message || "Network error");
+      console.error("Comment fetch error:", e);
+    }
   }, [postSlug]);
 
   useEffect(() => { fetchComments(); }, [fetchComments, refreshKey]);
@@ -344,7 +352,10 @@ function CommentList({ postSlug }: { postSlug: string }) {
   return (
     <div>
       <CommentForm postSlug={postSlug} onSubmitted={handleSubmitted} />
-      {comments.length === 0 ? (
+      {fetchError && (
+        <p className="text-xs text-red-500 text-center py-4">⚠ {fetchError}</p>
+      )}
+      {comments.length === 0 && !fetchError ? (
         <p className="text-sm text-[#9CA3AF] text-center py-8">No comments yet. Be the first!</p>
       ) : (
         <div className="space-y-1">

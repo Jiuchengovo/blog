@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import type { Metadata } from "next";
 import Reveal from "@/app/components/Reveal";
+import BlogSearch from "@/app/components/BlogSearch";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -54,9 +55,13 @@ export default function BlogPage() {
             </h1>
           </Reveal>
           <Reveal delay={200}>
-            <p className="text-lg text-[#6B7280] mb-12">
+            <p className="text-lg text-[#6B7280] mb-8">
               Thoughts on software, design, and building things.
             </p>
+          </Reveal>
+
+          <Reveal delay={250}>
+            <BlogSearch />
           </Reveal>
 
           {posts.length === 0 ? (
@@ -96,6 +101,7 @@ export default function BlogPage() {
               ))}
             </ul>
           )}
+
         </div>
       </div>
     </div>

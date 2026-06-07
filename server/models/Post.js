@@ -21,4 +21,7 @@ const postSchema = new mongoose.Schema(
   }
 );
 
+// Text index for full-text search
+postSchema.index({ title: "text", excerpt: "text", tags: "text", content: "text" });
+
 export default mongoose.model("Post", postSchema);

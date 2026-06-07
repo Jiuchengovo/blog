@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 const links = [
   { href: "/", label: "Home" },
@@ -12,7 +13,9 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const isBlogPage = pathname.startsWith("/blog");
+  const [isScrolled, setIsScrolled] = useState(isBlogPage);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +49,11 @@ export default function Navbar() {
               isScrolled ? "size-8 text-xs" : "size-9 text-sm"
             }`}
           >
-            A
+            {user?.avatar ? (
+              <img src={user.avatar} alt="" className="size-full rounded-full object-cover" />
+            ) : (
+              "A"
+            )}
           </div>
           <span
             className={`font-semibold text-[#1F2933] transition-all duration-300 ${
@@ -80,32 +87,40 @@ export default function Navbar() {
               </Link>
             );
           })}
+          {loading ? null : user ? (
+            <Link
+              href="/profile"
+              className={`relative rounded-full font-medium transition-all duration-300 ${
+                isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
+              } ${
+                pathname === "/profile"
+                  ? "text-[#1F2933]"
+                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+              }`}
+            >
+              Profile
+              {pathname === "/profile" && (
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+              )}
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className={`relative rounded-full font-medium transition-all duration-300 ${
+                isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
+              } ${
+                pathname === "/login"
+                  ? "text-[#1F2933]"
+                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+              }`}
+            >
+              Sign in
+              {pathname === "/login" && (
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+              )}
+            </Link>
+          )}
         </div>
-
-        {/* Right: CTA button */}
-        <Link
-          href="/blog"
-          className={`shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#6B7D6D] text-white hover:bg-[#5C6E5E] transition-all duration-300 ${
-            isScrolled ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"
-          }`}
-        >
-          Let&rsquo;s Talk
-          <svg
-            className={`transition-all duration-300 ${
-              isScrolled ? "size-3.5" : "size-4"
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </Link>
       </nav>
     </header>
   );
