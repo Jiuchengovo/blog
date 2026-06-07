@@ -7,10 +7,15 @@ const interactionSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    postSlug: {
+    targetId: {
       type: String,
       required: true,
       index: true,
+    },
+    targetType: {
+      type: String,
+      enum: ["post", "comment"],
+      required: true,
     },
     type: {
       type: String,
@@ -23,6 +28,9 @@ const interactionSchema = new mongoose.Schema(
   }
 );
 
-interactionSchema.index({ user: 1, postSlug: 1, type: 1 }, { unique: true });
+interactionSchema.index(
+  { user: 1, targetId: 1, targetType: 1, type: 1 },
+  { unique: true }
+);
 
 export default mongoose.model("Interaction", interactionSchema);

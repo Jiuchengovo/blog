@@ -4,7 +4,8 @@ import auth, { softAuth } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.post("/:postSlug/toggle", auth, toggleInteraction);
-router.get("/:postSlug/status", softAuth, getStatus);
+// New generic routes: targetId can be post slug or comment ID
+router.post("/:targetId/toggle", auth, toggleInteraction);
+router.get("/:targetId/status", softAuth, getStatus);
 
 export default router;

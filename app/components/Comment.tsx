@@ -176,7 +176,7 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
     try {
       const headers: Record<string, string> = {};
       if (token) headers.Authorization = `Bearer ${token}`;
-      const res = await fetch(`${API}/likes/${encodeURIComponent(postSlug)}/status`, { headers });
+      const res = await fetch(`${API}/likes/${encodeURIComponent(postSlug)}/status?targetType=post`, { headers });
       if (res.ok) setState(await res.json());
     } catch {}
   }, [postSlug, token]);
@@ -192,7 +192,7 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ type }),
+        body: JSON.stringify({ type, targetType: "post" }),
       });
       if (res.status === 401) { localStorage.removeItem("token"); return; }
       if (res.ok) {
@@ -384,6 +384,48 @@ function CommentItem({
   const { user, token } = useAuth();
   const [replying, setReplying] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+
+  // Fetch comment like status
+  useEffect(() => {
+    const fetchLike = async () => {
+      try {
+        const headers: Record<string, string> = {};
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch(
+          `${API}/likes/${encodeURIComponent(comment._id)}/status?targetType=comment`,
+          { headers }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setLiked(data.liked);
+          setLikesCount(data.likesCount);
+        }
+      } catch {}
+    };
+    fetchLike();
+  }, [comment._id, token]);
+
+  const handleLike = async () => {
+    if (!token) return;
+    try {
+      const res = await fetch(`${API}/likes/${encodeURIComponent(comment._id)}/toggle`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ type: "like", targetType: "comment" }),
+      });
+      if (res.status === 401) { localStorage.removeItem("token"); return; }
+      if (res.ok) {
+        const data = await res.json();
+        setLiked(data.active);
+        setLikesCount(data.count);
+      }
+    } catch {}
+  };
 
   const handleDelete = async () => {
     if (!token) return;
@@ -430,6 +472,18 @@ function CommentItem({
             </div>
             <p className="text-sm text-[#4a5563] leading-relaxed whitespace-pre-wrap">{comment.content}</p>
             <div className="flex items-center gap-3 mt-1.5">
+              {/* Like */}
+              <button
+                onClick={handleLike}
+                style={{ color: liked ? "#ef4444" : undefined }}
+                className="inline-flex items-center gap-1 text-xs text-[#9CA3AF] hover:text-red-400 transition-colors"
+              >
+                <svg className="size-3.5" fill={liked ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+                {likesCount > 0 && <span>{likesCount}</span>}
+              </button>
+
               {token && (
                 <button
                   onClick={() => setReplying(!replying)}
