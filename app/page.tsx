@@ -90,7 +90,7 @@ export default function Home() {
           <div className="rounded-3xl border border-[#E8E7E4] bg-white shadow-sm p-8 flex flex-col items-center text-center">
             {/* Avatar */}
             <img
-              src={`/avatar.jpg?v=${Date.now()}`}
+              src="/avatar.jpg"
               alt="Jiucheng"
               className="size-12 rounded-full object-cover ring-2 ring-[#E8E7E4] mb-3"
             />
