@@ -177,8 +177,14 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
       const headers: Record<string, string> = {};
       if (token) headers.Authorization = `Bearer ${token}`;
       const res = await fetch(`${API}/likes/${encodeURIComponent(postSlug)}/status?targetType=post`, { headers });
-      if (res.ok) setState(await res.json());
-    } catch {}
+      if (res.ok) {
+        setState(await res.json());
+      } else {
+        console.error(`[Like status] HTTP ${res.status}: ${await res.text()}`);
+      }
+    } catch (err) {
+      console.error("[Like status] Network error:", err);
+    }
   }, [postSlug, token]);
 
   useEffect(() => { fetchStatus(); }, [fetchStatus]);
@@ -197,17 +203,22 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
         },
         body: JSON.stringify({ type, targetType: "post" }),
       });
-      if (res.status === 401) { localStorage.removeItem("token"); return; }
-      if (res.ok) {
-        const data = await res.json();
-        setState((prev) => ({
-          ...prev,
-          ...(type === "like"
-            ? { liked: data.active, likesCount: data.count }
-            : { favorited: data.active, favoritesCount: data.count }),
-        }));
+      if (res.status === 401) { localStorage.removeItem("token"); window.location.href = "/login"; return; }
+      if (!res.ok) {
+        const text = await res.text();
+        console.error(`[Like toggle] HTTP ${res.status}: ${text}`);
+        return;
       }
-    } catch {}
+      const data = await res.json();
+      setState((prev) => ({
+        ...prev,
+        ...(type === "like"
+          ? { liked: data.active, likesCount: data.count }
+          : { favorited: data.active, favoritesCount: data.count }),
+      }));
+    } catch (err) {
+      console.error("[Like toggle] Network error:", err);
+    }
   };
 
   return (
@@ -423,13 +434,18 @@ function CommentItem({
         },
         body: JSON.stringify({ type: "like", targetType: "comment" }),
       });
-      if (res.status === 401) { localStorage.removeItem("token"); return; }
-      if (res.ok) {
-        const data = await res.json();
-        setCliked(data.active);
-        setClikesCount(data.count);
+      if (res.status === 401) { localStorage.removeItem("token"); window.location.href = "/login"; return; }
+      if (!res.ok) {
+        const text = await res.text();
+        console.error(`[Comment like] HTTP ${res.status}: ${text}`);
+        return;
       }
-    } catch {}
+      const data = await res.json();
+      setCliked(data.active);
+      setClikesCount(data.count);
+    } catch (err) {
+      console.error("[Comment like] Network error:", err);
+    }
   };
 
   const handleDelete = async () => {

@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { syncPostsToGit } from "./gitSync.js";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 
@@ -35,6 +36,9 @@ export function writePostFile(slug, { title, date, excerpt, tags, content }) {
 
   const filePath = path.join(POSTS_DIR, `${slug}.md`);
   fs.writeFileSync(filePath, lines.join("\n") + "\n", "utf8");
+
+  // Trigger GitHub Pages rebuild (fire-and-forget)
+  syncPostsToGit(slug, "update");
 }
 
 /**
@@ -45,4 +49,7 @@ export function deletePostFile(slug) {
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
   }
+
+  // Trigger GitHub Pages rebuild (fire-and-forget)
+  syncPostsToGit(slug, "delete");
 }

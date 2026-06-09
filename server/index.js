@@ -17,6 +17,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Security headers
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Cache-Control", "no-store, max-age=0");
+  next();
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
