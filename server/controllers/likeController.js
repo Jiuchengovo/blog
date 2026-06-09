@@ -19,7 +19,8 @@ export const toggleInteraction = async (req, res, next) => {
       return res.status(400).json({ message: "Favorite is only supported for posts" });
     }
 
-    const existing = await Interaction.findOne({
+    // Atomic: try to remove first
+    const existing = await Interaction.findOneAndDelete({
       user: userId,
       targetId,
       targetType,
@@ -27,12 +28,22 @@ export const toggleInteraction = async (req, res, next) => {
     });
 
     if (existing) {
-      await existing.deleteOne();
       const count = await Interaction.countDocuments({ targetId, targetType, type });
       return res.json({ active: false, count });
     }
 
-    await Interaction.create({ user: userId, targetId, targetType, type });
+    // Try to create — handle potential race
+    try {
+      await Interaction.create({ user: userId, targetId, targetType, type });
+    } catch (err) {
+      if (err.code === 11000) {
+        // Already exists (race condition)
+        const count = await Interaction.countDocuments({ targetId, targetType, type });
+        return res.json({ active: true, count });
+      }
+      throw err;
+    }
+
     const count = await Interaction.countDocuments({ targetId, targetType, type });
 
     res.json({ active: true, count });
