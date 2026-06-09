@@ -34,17 +34,37 @@ app.use(errorHandler);
 const start = async () => {
   await connectDB();
 
-  // Migrate old Interaction documents: postSlug → targetId + targetType
+  // Migrate old Interaction documents & indexes
   try {
     const interactions = await import("mongoose").then((m) =>
       m.default.connection.db.collection("interactions")
     );
+
+    // 1. Rename postSlug → targetId, add targetType for old documents
     const result = await interactions.updateMany(
       { targetType: { $exists: false } },
       { $rename: { postSlug: "targetId" }, $set: { targetType: "post" } }
     );
     if (result.modifiedCount > 0) {
       console.log(`Migrated ${result.modifiedCount} interaction(s) to new schema`);
+    }
+
+    // 2. Drop old unique index (user + postSlug + type) if it still exists
+    const indexes = await interactions.indexes();
+    const oldIndex = indexes.find((idx) => idx.name === "user_1_postSlug_1_type_1");
+    if (oldIndex) {
+      await interactions.dropIndex("user_1_postSlug_1_type_1");
+      console.log("Dropped old index: user_1_postSlug_1_type_1");
+    }
+
+    // 3. Ensure new compound unique index exists
+    const newIndexExists = indexes.some((idx) => idx.name === "user_1_targetId_1_targetType_1_type_1");
+    if (!newIndexExists) {
+      await interactions.createIndex(
+        { user: 1, targetId: 1, targetType: 1, type: 1 },
+        { unique: true }
+      );
+      console.log("Created new index: user_1_targetId_1_targetType_1_type_1");
     }
   } catch {}
 

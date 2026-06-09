@@ -71,29 +71,41 @@ export default function BlogPage() {
               </p>
             </Reveal>
           ) : (
-            <ul className="divide-y divide-[#E8E7E4]">
+            <ul className="space-y-5">
               {posts.map((post, i) => (
                 <li key={post.slug}>
                   <Reveal delay={250 + i * 80}>
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="group block py-6 -mx-3 px-3 rounded-lg hover:bg-[#FAFAF8] transition-colors"
+                      className="group block rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm hover:bg-white transition-colors"
                     >
-                      <div className="flex items-baseline gap-4 mb-1">
+                      <div className="flex items-baseline gap-4 mb-3">
                         <time
                           dateTime={post.date}
-                          className="shrink-0 text-sm text-[#6B7280] group-hover:text-[#1F2933] transition-colors"
+                          className="shrink-0 text-base text-[#6B7280] group-hover:text-[#1F2933] transition-colors"
                         >
                           {post.date}
                         </time>
-                        <h2 className="text-[#1F2933] font-semibold">
+                        <h2 className="text-xl text-[#1F2933] font-semibold group-hover:text-[#6B7D6D] transition-colors">
                           {post.title}
                         </h2>
                       </div>
                       {post.excerpt && (
-                        <p className="text-sm text-[#6B7280] transition-colors line-clamp-1 pl-0 sm:pl-[7.5rem]">
+                        <p className="text-base text-[#6B7280] transition-colors line-clamp-2 pl-0 sm:pl-[8.5rem] leading-relaxed">
                           {post.excerpt}
                         </p>
+                      )}
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3 pl-0 sm:pl-[8.5rem]">
+                          {post.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="inline-flex rounded-full bg-[#e8e8e6] px-3 py-0.5 text-sm font-medium text-[#6B7280]"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
                       )}
                     </Link>
                   </Reveal>

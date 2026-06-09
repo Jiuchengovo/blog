@@ -1,4 +1,5 @@
 import Post from "../models/Post.js";
+import { writePostFile, deletePostFile } from "../lib/fileSync.js";
 
 export const getAll = async (req, res, next) => {
   try {
@@ -24,6 +25,14 @@ export const getBySlug = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const post = await Post.create(req.body);
+    // Sync to filesystem so SSG pages can render the new post
+    writePostFile(post.slug, {
+      title: post.title,
+      date: post.date,
+      excerpt: post.excerpt,
+      tags: post.tags,
+      content: post.content,
+    });
     res.status(201).json({ post });
   } catch (err) {
     next(err);
@@ -40,6 +49,14 @@ export const update = async (req, res, next) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+    // Sync to filesystem
+    writePostFile(post.slug, {
+      title: post.title,
+      date: post.date,
+      excerpt: post.excerpt,
+      tags: post.tags,
+      content: post.content,
+    });
     res.json({ post });
   } catch (err) {
     next(err);
@@ -52,6 +69,8 @@ export const remove = async (req, res, next) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+    // Remove from filesystem
+    deletePostFile(post.slug);
     res.json({ message: "Post deleted" });
   } catch (err) {
     next(err);

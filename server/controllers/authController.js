@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-const generateToken = (userId) => {
+const generateToken = (userId, role) => {
   const secret = process.env.JWT_SECRET || "fallback-secret";
   const expiresIn = process.env.JWT_EXPIRES_IN || "7d";
-  return jwt.sign({ userId }, secret, { expiresIn });
+  return jwt.sign({ userId, role }, secret, { expiresIn });
 };
 
 export const register = async (req, res, next) => {
@@ -21,11 +21,11 @@ export const register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({ username, email, password: hashedPassword });
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.status(201).json({
       token,
-      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar },
+      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar, role: user.role },
     });
   } catch (err) {
     next(err);
@@ -46,11 +46,11 @@ export const login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.json({
       token,
-      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar },
+      user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar, role: user.role },
     });
   } catch (err) {
     next(err);
@@ -63,7 +63,7 @@ export const getMe = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar, bio: user.bio } });
+    res.json({ user: { id: user._id, username: user.username, email: user.email, avatar: user.avatar, bio: user.bio, role: user.role } });
   } catch (err) {
     next(err);
   }

@@ -114,7 +114,7 @@ export default function BlogSearch() {
 
       {/* Results dropdown */}
       {showResults && (
-        <div className="absolute inset-x-0 top-full mt-2 rounded-2xl border border-[#E8E7E4] bg-white shadow-lg overflow-hidden z-40">
+        <div className="mt-2 rounded-2xl border border-[#E8E7E4] bg-white shadow-xl overflow-hidden">
           {results.length === 0 ? (
             <p className="px-5 py-8 text-sm text-center text-[#9CA3AF]">
               No posts found for &ldquo;{query}&rdquo;

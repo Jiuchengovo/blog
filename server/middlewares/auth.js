@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
   try {
     const secret = process.env.JWT_SECRET || "fallback-secret";
     const decoded = jwt.verify(token, secret);
-    req.user = { id: decoded.userId };
+    req.user = { id: decoded.userId, role: decoded.role || "user" };
     next();
   } catch {
     return res.status(401).json({ message: "Invalid or expired token" });
@@ -32,7 +32,7 @@ export const softAuth = (req, _res, next) => {
   try {
     const secret = process.env.JWT_SECRET || "fallback-secret";
     const decoded = jwt.verify(token, secret);
-    req.user = { id: decoded.userId };
+    req.user = { id: decoded.userId, role: decoded.role || "user" };
   } catch {
     // token invalid — treat as unauthenticated
   }

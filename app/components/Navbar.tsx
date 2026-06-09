@@ -87,6 +87,23 @@ export default function Navbar() {
               </Link>
             );
           })}
+          {loading ? null : user?.role === "admin" ? (
+            <Link
+              href="/admin"
+              className={`relative rounded-full font-medium transition-all duration-300 ${
+                isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
+              } ${
+                pathname === "/admin"
+                  ? "text-[#1F2933]"
+                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+              }`}
+            >
+              Admin
+              {pathname === "/admin" && (
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+              )}
+            </Link>
+          ) : null}
           {loading ? null : user ? (
             <Link
               href="/profile"
