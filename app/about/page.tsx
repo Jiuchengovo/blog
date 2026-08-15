@@ -73,7 +73,7 @@ export default async function AboutPage() {
   const about = await getAboutContent();
 
   return (
-    <div className="min-h-screen bg-[#F5F5F3]">
+    <div className="min-h-screen bg-surface">
       <div className="mx-auto max-w-7xl px-6 pt-28 sm:pt-32 pb-20 sm:pb-24">
         <div className="flex gap-10">
           {/* Left: placeholder sidebar — balances the centered feel */}
@@ -82,25 +82,25 @@ export default async function AboutPage() {
           {/* Center: Content */}
           <article className="flex-1 min-w-0">
             <Reveal delay={100}>
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#1F2933] mb-4">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-ink mb-4">
                 {about?.title ?? "About"}
               </h1>
             </Reveal>
             <Reveal delay={200}>
-              <p className="text-lg text-[#6B7280] mb-12">
+              <p className="text-lg text-ink-secondary mb-12">
                 A bit about who I am and what I do.
               </p>
             </Reveal>
 
             <Reveal delay={300}>
-              <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm">
+              <div className="rounded-2xl border border-line bg-card-alt p-8 sm:p-10 shadow-sm">
                 {about ? (
                   <div
                     className={styles.markdown}
                     dangerouslySetInnerHTML={{ __html: about.content }}
                   />
                 ) : (
-                  <p className="text-[#6B7280]">Nothing here yet.</p>
+                  <p className="text-ink-secondary">Nothing here yet.</p>
                 )}
               </div>
             </Reveal>

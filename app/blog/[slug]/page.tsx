@@ -25,17 +25,17 @@ export async function generateMetadata({
 }
 
 const tagColorMap: Record<string, string> = {
-  nextjs: "bg-[#e8ece5] text-[#5a6b59]",
-  tailwindcss: "bg-[#e6eaec] text-[#4d5d64]",
-  markdown: "bg-[#ece6e8] text-[#6b5d62]",
-  typescript: "bg-[#e6e8ec] text-[#4d5568]",
-  react: "bg-[#e8ece6] text-[#5a6b5d]",
-  css: "bg-[#e6e6ec] text-[#5d5d6b]",
+  nextjs: "bg-[#e8ece5] text-[#5a6b59] dark:bg-[#26302a] dark:text-[#a5b4a3]",
+  tailwindcss: "bg-[#e6eaec] text-[#4d5d64] dark:bg-[#262d31] dark:text-[#a2b1b6]",
+  markdown: "bg-[#ece6e8] text-[#6b5d62] dark:bg-[#2e2933] dark:text-[#b3a7ac]",
+  typescript: "bg-[#e6e8ec] text-[#4d5568] dark:bg-[#272c34] dark:text-[#a2adba]",
+  react: "bg-[#e8ece6] text-[#5a6b5d] dark:bg-[#26302a] dark:text-[#a5b4a3]",
+  css: "bg-[#e6e6ec] text-[#5d5d6b] dark:bg-[#292932] dark:text-[#a9a9b5]",
 };
 
 function TagBadge({ tag }: { tag: string }) {
   const colorClass =
-    tagColorMap[tag.toLowerCase()] ?? "bg-[#e8e8e6] text-[#6B7280]";
+    tagColorMap[tag.toLowerCase()] ?? "bg-chip text-ink-secondary";
   return (
     <span
       className={`inline-flex items-center rounded-full px-3 py-0.5 text-xs font-medium ${colorClass}`}
@@ -69,23 +69,23 @@ export default async function BlogPostPage({
   const recentPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F3]">
+    <div className="min-h-screen bg-surface">
       <div className="mx-auto max-w-7xl px-6 pt-28 sm:pt-32 pb-20 sm:pb-24">
         <div className="flex gap-10">
           {/* Left: Table of Contents */}
           <aside className="w-56 shrink-0 hidden lg:block">
             <Reveal delay={300}>
               <nav className="sticky top-32">
-                <h4 className="text-sm font-semibold uppercase tracking-wider text-[#9CA3AF] mb-3">
+                <h4 className="text-sm font-semibold uppercase tracking-wider text-ink-muted mb-3">
                   On this page
                 </h4>
                 {post.headings.length > 0 ? (
-                  <ul className="space-y-0.5 border-l border-[#E8E7E4]">
+                  <ul className="space-y-0.5 border-l border-line">
                     {post.headings.map((h) => (
                       <li key={h.id}>
                         <a
                           href={`#${h.id}`}
-                          className={`block text-base text-[#6B7280] hover:text-[#1F2933] transition-colors py-1 leading-snug ${
+                          className={`block text-base text-ink-secondary hover:text-ink transition-colors py-1 leading-snug ${
                             h.level === 3 ? "pl-4" : "pl-3"
                           }`}
                         >
@@ -95,7 +95,7 @@ export default async function BlogPostPage({
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-[#9CA3AF]">No headings</p>
+                  <p className="text-sm text-ink-muted">No headings</p>
                 )}
               </nav>
             </Reveal>
@@ -106,7 +106,7 @@ export default async function BlogPostPage({
             <Reveal delay={100}>
               <Link
                 href="/blog"
-                className="mb-8 inline-flex items-center gap-1.5 text-sm text-[#6B7280] hover:text-[#1F2933] transition-colors"
+                className="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-ink transition-colors"
               >
                 <svg
                   className="size-4"
@@ -126,13 +126,13 @@ export default async function BlogPostPage({
             </Reveal>
 
             <Reveal delay={200}>
-              <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm">
+              <div className="rounded-2xl border border-line bg-card-alt p-8 sm:p-10 shadow-sm">
                 <header className="mb-12">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933] mb-4">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-4">
                     {post.title}
                   </h1>
                   <div className="flex flex-wrap items-center gap-3 text-sm">
-                    <time dateTime={post.date} className="text-[#6B7280]">
+                    <time dateTime={post.date} className="text-ink-secondary">
                       Published {formatDate(post.date)}
                     </time>
                     {post.tags && post.tags.length > 0 && (
@@ -166,49 +166,49 @@ export default async function BlogPostPage({
               <div className="sticky top-32 space-y-8">
                 {/* Prev / Next navigation */}
                 <div>
-                  <h4 className="text-sm font-semibold uppercase tracking-wider text-[#9CA3AF] mb-3">
+                  <h4 className="text-sm font-semibold uppercase tracking-wider text-ink-muted mb-3">
                     Navigate
                   </h4>
                   <div className="space-y-2">
                     {prev ? (
                       <Link
                         href={`/blog/${prev.slug}`}
-                        className="group block rounded-lg border border-[#E8E7E4] bg-white p-3 hover:border-[#6B7D6D] transition-colors"
+                        className="group block rounded-lg border border-line bg-card p-3 hover:border-accent transition-colors"
                       >
-                        <span className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+                        <span className="text-xs uppercase tracking-wider text-ink-muted">
                           Previous
                         </span>
-                        <p className="text-base font-medium text-[#1F2933] group-hover:text-[#6B7D6D] transition-colors line-clamp-2 mt-0.5">
+                        <p className="text-base font-medium text-ink group-hover:text-accent transition-colors line-clamp-2 mt-0.5">
                           {prev.title}
                         </p>
                       </Link>
                     ) : (
-                      <div className="rounded-lg border border-[#E8E7E4] bg-white p-3 opacity-50">
-                        <span className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+                      <div className="rounded-lg border border-line bg-card p-3 opacity-50">
+                        <span className="text-xs uppercase tracking-wider text-ink-muted">
                           Previous
                         </span>
-                        <p className="text-base text-[#9CA3AF] mt-0.5">None</p>
+                        <p className="text-base text-ink-muted mt-0.5">None</p>
                       </div>
                     )}
 
                     {next ? (
                       <Link
                         href={`/blog/${next.slug}`}
-                        className="group block rounded-lg border border-[#E8E7E4] bg-white p-3 hover:border-[#6B7D6D] transition-colors"
+                        className="group block rounded-lg border border-line bg-card p-3 hover:border-accent transition-colors"
                       >
-                        <span className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+                        <span className="text-xs uppercase tracking-wider text-ink-muted">
                           Next
                         </span>
-                        <p className="text-base font-medium text-[#1F2933] group-hover:text-[#6B7D6D] transition-colors line-clamp-2 mt-0.5">
+                        <p className="text-base font-medium text-ink group-hover:text-accent transition-colors line-clamp-2 mt-0.5">
                           {next.title}
                         </p>
                       </Link>
                     ) : (
-                      <div className="rounded-lg border border-[#E8E7E4] bg-white p-3 opacity-50">
-                        <span className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+                      <div className="rounded-lg border border-line bg-card p-3 opacity-50">
+                        <span className="text-xs uppercase tracking-wider text-ink-muted">
                           Next
                         </span>
-                        <p className="text-base text-[#9CA3AF] mt-0.5">None</p>
+                        <p className="text-base text-ink-muted mt-0.5">None</p>
                       </div>
                     )}
                   </div>
@@ -217,7 +217,7 @@ export default async function BlogPostPage({
                 {/* Recent posts */}
                 {recentPosts.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-semibold uppercase tracking-wider text-[#9CA3AF] mb-3">
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-ink-muted mb-3">
                       Recent posts
                     </h4>
                     <ul className="space-y-2">
@@ -227,10 +227,10 @@ export default async function BlogPostPage({
                             href={`/blog/${rp.slug}`}
                             className="group block"
                           >
-                            <time className="text-xs text-[#9CA3AF]">
+                            <time className="text-xs text-ink-muted">
                               {rp.date}
                             </time>
-                            <p className="text-base text-[#6B7280] group-hover:text-[#1F2933] transition-colors line-clamp-2 leading-snug">
+                            <p className="text-base text-ink-secondary group-hover:text-ink transition-colors line-clamp-2 leading-snug">
                               {rp.title}
                             </p>
                           </Link>

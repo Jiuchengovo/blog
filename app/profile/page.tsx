@@ -73,7 +73,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="mx-auto px-6 pt-32 text-center" style={{ maxWidth: "36rem" }}>
-        <p className="text-[#9CA3AF]">Loading…</p>
+        <p className="text-ink-muted">Loading…</p>
       </div>
     );
   }
@@ -83,27 +83,27 @@ export default function ProfilePage() {
   return (
     <div className="mx-auto px-6 pt-28 pb-20 sm:pt-32 sm:pb-24" style={{ maxWidth: "36rem" }}>
       <Reveal delay={100}>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933] mb-3">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-3">
           Profile
         </h1>
       </Reveal>
       <Reveal delay={200}>
-        <p className="text-[#6B7280] mb-10">
+        <p className="text-ink-secondary mb-10">
           Manage your profile and account settings.
         </p>
       </Reveal>
 
       {/* Profile section */}
       <Reveal delay={250}>
-        <section className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 shadow-sm mb-8">
-          <h2 className="text-lg font-semibold text-[#1F2933] mb-6">Profile</h2>
+        <section className="rounded-2xl border border-line bg-card-alt p-8 shadow-sm mb-8">
+          <h2 className="text-lg font-semibold text-ink mb-6">Profile</h2>
 
           {profileMsg && (
             <div
               className={`rounded-lg border px-4 py-3 text-sm mb-5 ${
                 profileMsg.type === "success"
-                  ? "bg-green-50 border-green-200 text-green-700"
-                  : "bg-red-50 border-red-200 text-red-700"
+                  ? "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/60 dark:border-green-900 dark:text-green-300"
+                  : "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/60 dark:border-red-900 dark:text-red-300"
               }`}
             >
               {profileMsg.text}
@@ -112,42 +112,42 @@ export default function ProfilePage() {
 
           <form onSubmit={handleProfileSubmit} className="space-y-5">
             <label className="block">
-              <span className="text-sm font-medium text-[#1F2933]">Username</span>
+              <span className="text-sm font-medium text-ink">Username</span>
               <input
                 type="text"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
               />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-[#1F2933]">Bio</span>
+              <span className="text-sm font-medium text-ink">Bio</span>
               <textarea
                 rows={3}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="A short introduction about yourself…"
-                className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow resize-none"
+                className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow resize-none"
               />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-[#1F2933]">Avatar URL</span>
+              <span className="text-sm font-medium text-ink">Avatar URL</span>
               <input
                 type="url"
                 value={avatar}
                 onChange={(e) => setAvatar(e.target.value)}
                 placeholder="https://example.com/avatar.jpg"
-                className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
               />
             </label>
 
             <button
               type="submit"
               disabled={savingProfile}
-              className="rounded-xl bg-[#6B7D6D] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#5C6E5E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {savingProfile ? "Saving…" : "Save changes"}
             </button>
@@ -157,15 +157,15 @@ export default function ProfilePage() {
 
       {/* Password section */}
       <Reveal delay={350}>
-        <section className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 shadow-sm">
-          <h2 className="text-lg font-semibold text-[#1F2933] mb-6">Change password</h2>
+        <section className="rounded-2xl border border-line bg-card-alt p-8 shadow-sm">
+          <h2 className="text-lg font-semibold text-ink mb-6">Change password</h2>
 
           {pwdMsg && (
             <div
               className={`rounded-lg border px-4 py-3 text-sm mb-5 ${
                 pwdMsg.type === "success"
-                  ? "bg-green-50 border-green-200 text-green-700"
-                  : "bg-red-50 border-red-200 text-red-700"
+                  ? "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/60 dark:border-green-900 dark:text-green-300"
+                  : "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/60 dark:border-red-900 dark:text-red-300"
               }`}
             >
               {pwdMsg.text}
@@ -174,32 +174,32 @@ export default function ProfilePage() {
 
           <form onSubmit={handlePasswordSubmit} className="space-y-5">
             <label className="block">
-              <span className="text-sm font-medium text-[#1F2933]">Current password</span>
+              <span className="text-sm font-medium text-ink">Current password</span>
               <input
                 type="password"
                 required
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
               />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-[#1F2933]">New password</span>
+              <span className="text-sm font-medium text-ink">New password</span>
               <input
                 type="password"
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
               />
             </label>
 
             <button
               type="submit"
               disabled={changingPwd}
-              className="rounded-xl bg-[#6B7D6D] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#5C6E5E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {changingPwd ? "Changing…" : "Change password"}
             </button>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "/", label: "Home" },
@@ -35,7 +36,7 @@ export default function Navbar() {
       <nav
         className={`flex items-center justify-between w-full max-w-7xl rounded-full border transition-all duration-300 ${
           isScrolled
-            ? "bg-white/95 backdrop-blur-xl border-[#E8E7E4] shadow-md px-6 py-3"
+            ? "bg-card/95 backdrop-blur-xl border-line shadow-md px-6 py-3"
             : "bg-transparent border-transparent shadow-none px-6 py-3.5"
         }`}
       >
@@ -45,7 +46,7 @@ export default function Navbar() {
           className="flex items-center gap-2.5 shrink-0 hover:opacity-80 transition-opacity"
         >
           <div
-            className={`rounded-full bg-[#6B7D6D] flex items-center justify-center text-white font-bold transition-all duration-300 ${
+            className={`rounded-full bg-accent flex items-center justify-center text-white font-bold transition-all duration-300 ${
               isScrolled ? "size-8 text-xs" : "size-9 text-sm"
             }`}
           >
@@ -56,7 +57,7 @@ export default function Navbar() {
             )}
           </div>
           <span
-            className={`font-semibold text-[#1F2933] transition-all duration-300 ${
+            className={`font-semibold text-ink transition-all duration-300 ${
               isScrolled ? "text-sm" : "text-base"
             }`}
           >
@@ -76,13 +77,13 @@ export default function Navbar() {
                   isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
                 } ${
                   isActive
-                    ? "text-[#1F2933]"
-                    : "text-[#1F2933]/60 hover:text-[#1F2933]"
+                    ? "text-ink"
+                    : "text-ink/60 hover:text-ink"
                 }`}
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-accent" />
                 )}
               </Link>
             );
@@ -94,13 +95,13 @@ export default function Navbar() {
                 isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
               } ${
                 pathname === "/admin"
-                  ? "text-[#1F2933]"
-                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+                  ? "text-ink"
+                  : "text-ink/60 hover:text-ink"
               }`}
             >
               Admin
               {pathname === "/admin" && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-accent" />
               )}
             </Link>
           ) : null}
@@ -111,13 +112,13 @@ export default function Navbar() {
                 isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
               } ${
                 pathname === "/profile"
-                  ? "text-[#1F2933]"
-                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+                  ? "text-ink"
+                  : "text-ink/60 hover:text-ink"
               }`}
             >
               Profile
               {pathname === "/profile" && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-accent" />
               )}
             </Link>
           ) : (
@@ -127,16 +128,17 @@ export default function Navbar() {
                 isScrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base"
               } ${
                 pathname === "/login"
-                  ? "text-[#1F2933]"
-                  : "text-[#1F2933]/60 hover:text-[#1F2933]"
+                  ? "text-ink"
+                  : "text-ink/60 hover:text-ink"
               }`}
             >
               Sign in
               {pathname === "/login" && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#6B7D6D]" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-accent" />
               )}
             </Link>
           )}
+          <ThemeToggle />
         </div>
       </nav>
     </header>

@@ -74,9 +74,9 @@ export default function BlogSearch() {
   return (
     <div ref={containerRef} className="relative mb-8">
       {/* Search input with flexbox — no absolute positioning */}
-      <div className="flex items-center rounded-2xl border border-[#E8E7E4] bg-white focus-within:ring-2 focus-within:ring-[#6B7D6D]/30 focus-within:border-[#6B7D6D] transition-shadow overflow-hidden">
+      <div className="flex items-center rounded-2xl border border-line bg-card focus-within:ring-2 focus-within:ring-accent/30 focus-within:border-accent transition-shadow overflow-hidden">
         {/* Search icon */}
-        <span className="pl-4 shrink-0 text-[#9CA3AF]">
+        <span className="pl-4 shrink-0 text-ink-muted">
           <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -89,13 +89,13 @@ export default function BlogSearch() {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => results.length > 0 && setShowResults(true)}
           placeholder="Search posts…"
-          className="block w-full px-3 py-3 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] bg-transparent focus:outline-none"
+          className="block w-full px-3 py-3 text-sm text-ink placeholder:text-ink-muted bg-transparent focus:outline-none"
         />
 
         {/* Loading spinner */}
         {searching && (
           <span className="shrink-0 pr-3">
-            <div className="size-4 border-2 border-[#D1CEC7] border-t-[#6B7D6D] rounded-full animate-spin" />
+            <div className="size-4 border-2 border-line-soft border-t-accent rounded-full animate-spin" />
           </span>
         )}
 
@@ -103,7 +103,7 @@ export default function BlogSearch() {
         {query && !searching && (
           <button
             onClick={handleClear}
-            className="shrink-0 pr-4 text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
+            className="shrink-0 pr-4 text-ink-muted hover:text-ink-secondary transition-colors"
           >
             <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -114,26 +114,26 @@ export default function BlogSearch() {
 
       {/* Results dropdown */}
       {showResults && (
-        <div className="mt-2 rounded-2xl border border-[#E8E7E4] bg-white shadow-xl overflow-hidden">
+        <div className="mt-2 rounded-2xl border border-line bg-card shadow-xl overflow-hidden">
           {results.length === 0 ? (
-            <p className="px-5 py-8 text-sm text-center text-[#9CA3AF]">
+            <p className="px-5 py-8 text-sm text-center text-ink-muted">
               No posts found for &ldquo;{query}&rdquo;
             </p>
           ) : (
-            <ul className="divide-y divide-[#E8E7E4] max-h-96 overflow-y-auto">
+            <ul className="divide-y divide-line max-h-96 overflow-y-auto">
               {results.map((post) => (
                 <li key={post._id}>
                   <Link
                     href={`/blog/${post.slug}`}
                     onClick={() => setShowResults(false)}
-                    className="block px-5 py-3.5 hover:bg-[#FAFAF8] transition-colors"
+                    className="block px-5 py-3.5 hover:bg-card-alt transition-colors"
                   >
                     <div className="flex items-baseline gap-3">
-                      <time className="shrink-0 text-xs text-[#9CA3AF]">{post.date}</time>
-                      <span className="text-sm font-medium text-[#1F2933] truncate">{post.title}</span>
+                      <time className="shrink-0 text-xs text-ink-muted">{post.date}</time>
+                      <span className="text-sm font-medium text-ink truncate">{post.title}</span>
                     </div>
                     {post.excerpt && (
-                      <p className="mt-1 text-xs text-[#6B7280] line-clamp-1 ml-0 sm:ml-[5.5rem]">
+                      <p className="mt-1 text-xs text-ink-secondary line-clamp-1 ml-0 sm:ml-[5.5rem]">
                         {post.excerpt}
                       </p>
                     )}

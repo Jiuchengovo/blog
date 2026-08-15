@@ -1,8 +1,83 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: toggled by adding `.dark` on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic color tokens → Tailwind utilities (bg-surface, text-ink, border-line, ...) */
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-alt: var(--card-alt);
+  --color-chip: var(--chip);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+}
+
+:root {
+  color-scheme: light;
+
+  --surface: #f5f5f3;
+  --card: #ffffff;
+  --card-alt: #fafaf8;
+  --chip: #e8e8e6;
+  --line: #e8e7e4;
+  --line-soft: #d1cec7;
+  --ink: #1f2933;
+  --ink-secondary: #6b7280;
+  --ink-muted: #9ca3af;
+  --accent: #6b7d6d;
+  --accent-hover: #5c6e5e;
+
+  /* markdown prose */
+  --md-text: #4a5563;
+  --md-heading: #1f2933;
+  --md-h3: #2d3744;
+  --md-link: #6b7d6d;
+  --md-link-hover: #4d5e4f;
+  --md-code-text: #8b6b5e;
+  --md-code-bg: #f5f0ee;
+  --md-pre-bg: #2d3339;
+  --md-pre-text: #c4c9cf;
+  --md-quote-bg: #f5f6f3;
+  --md-row-border: #f2f1ee;
+  --md-marker: #a0a8b0;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --surface: #15171b;
+  --card: #1d2026;
+  --card-alt: #22262d;
+  --chip: #2a2e36;
+  --line: #2e333c;
+  --line-soft: #3a4049;
+  --ink: #e8eaee;
+  --ink-secondary: #a0a8b4;
+  --ink-muted: #6e7683;
+  --accent: #8fa893;
+  --accent-hover: #a3bca7;
+
+  --md-text: #a8b0ba;
+  --md-heading: #e8eaee;
+  --md-h3: #d5dae0;
+  --md-link: #8fa893;
+  --md-link-hover: #a3bca7;
+  --md-code-text: #d0ab97;
+  --md-code-bg: #2a2e35;
+  --md-pre-bg: #121419;
+  --md-pre-text: #c4c9cf;
+  --md-quote-bg: #23262c;
+  --md-row-border: #2a2e36;
+  --md-marker: #7a828e;
 }
 
 body {

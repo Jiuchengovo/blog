@@ -32,8 +32,8 @@ export default function Comment({ postSlug }: { postSlug: string }) {
   const auth = useAuth();
 
   return (
-    <section className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm">
-      <h2 className="text-xl font-semibold tracking-tight text-[#1F2933] mb-8">
+    <section className="rounded-2xl border border-line bg-card-alt p-8 sm:p-10 shadow-sm">
+      <h2 className="text-xl font-semibold tracking-tight text-ink mb-8">
         Comments
       </h2>
 
@@ -58,18 +58,18 @@ function AuthBar() {
 
   if (user && token) {
     return (
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#E8E7E4]">
-        <div className="size-9 rounded-full bg-[#6B7D6D] flex items-center justify-center text-white font-bold text-sm">
+      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-line">
+        <div className="size-9 rounded-full bg-accent flex items-center justify-center text-white font-bold text-sm">
           {user.avatar ? (
             <img src={user.avatar} alt="" className="size-full rounded-full object-cover" />
           ) : (
             user.username.charAt(0).toUpperCase()
           )}
         </div>
-        <span className="text-sm font-medium text-[#1F2933]">{user.username}</span>
+        <span className="text-sm font-medium text-ink">{user.username}</span>
         <button
           onClick={logout}
-          className="ml-auto text-xs text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
+          className="ml-auto text-xs text-ink-muted hover:text-ink-secondary transition-colors"
         >
           Log out
         </button>
@@ -79,18 +79,18 @@ function AuthBar() {
 
   if (mode === "idle") {
     return (
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#E8E7E4]">
-        <span className="text-sm text-[#6B7280]">Sign in to comment</span>
+      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-line">
+        <span className="text-sm text-ink-secondary">Sign in to comment</span>
         <button
           onClick={() => setMode("login")}
-          className="text-sm font-medium text-[#6B7D6D] hover:text-[#5C6E5E] transition-colors"
+          className="text-sm font-medium text-accent hover:text-accent-hover transition-colors"
         >
           Log in
         </button>
-        <span className="text-[#D1CEC7]">|</span>
+        <span className="text-line-soft">|</span>
         <button
           onClick={() => setMode("register")}
-          className="text-sm text-[#6B7280] hover:text-[#1F2933] transition-colors"
+          className="text-sm text-ink-secondary hover:text-ink transition-colors"
         >
           Register
         </button>
@@ -117,7 +117,7 @@ function AuthBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6 pb-4 border-b border-[#E8E7E4]">
+    <form onSubmit={handleSubmit} className="mb-6 pb-4 border-b border-line">
       <div className="flex flex-wrap gap-3">
         {mode === "register" && (
           <input
@@ -126,7 +126,7 @@ function AuthBar() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="flex-1 min-w-[120px] rounded-lg border border-[#E8E7E4] bg-white px-3 py-2 text-sm text-[#1F2933] placeholder-[#9CA3AF] focus:outline-none focus:border-[#6B7D6D]"
+            className="flex-1 min-w-[120px] rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-accent"
           />
         )}
         <input
@@ -135,7 +135,7 @@ function AuthBar() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="flex-1 min-w-[160px] rounded-lg border border-[#E8E7E4] bg-white px-3 py-2 text-sm text-[#1F2933] placeholder-[#9CA3AF] focus:outline-none focus:border-[#6B7D6D]"
+          className="flex-1 min-w-[160px] rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-accent"
         />
         <input
           type="password"
@@ -143,18 +143,18 @@ function AuthBar() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="flex-1 min-w-[120px] rounded-lg border border-[#E8E7E4] bg-white px-3 py-2 text-sm text-[#1F2933] placeholder-[#9CA3AF] focus:outline-none focus:border-[#6B7D6D]"
+          className="flex-1 min-w-[120px] rounded-lg border border-line bg-card px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-accent"
         />
         <button
           type="submit"
-          className="rounded-lg bg-[#6B7D6D] px-5 py-2 text-sm font-medium text-white hover:bg-[#5C6E5E] transition-colors"
+          className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
         >
           {mode === "login" ? "Log in" : "Register"}
         </button>
         <button
           type="button"
           onClick={() => { setMode("idle"); setError(""); }}
-          className="text-sm text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
+          className="text-sm text-ink-muted hover:text-ink-secondary transition-colors"
         >
           Cancel
         </button>
@@ -222,7 +222,7 @@ function InteractionBar({ postSlug }: { postSlug: string }) {
   };
 
   return (
-    <div className="flex items-center gap-4 mb-6 pb-4 border-b border-[#E8E7E4]">
+    <div className="flex items-center gap-4 mb-6 pb-4 border-b border-line">
       <button
         onClick={() => toggle("like")}
         style={{ color: state.liked ? "#ef4444" : "#6B7280" }}
@@ -304,10 +304,10 @@ function CommentForm({
   return (
     <form onSubmit={handleSubmit} className="mb-6">
       {replyTo && (
-        <div className="flex items-center gap-2 mb-2 text-sm text-[#6B7280]">
+        <div className="flex items-center gap-2 mb-2 text-sm text-ink-secondary">
           <span>Replying to</span>
-          <span className="font-medium text-[#6B7D6D]">@{replyTo.username}</span>
-          <button type="button" onClick={onCancelReply} className="text-[#9CA3AF] hover:text-[#1F2933] transition-colors">
+          <span className="font-medium text-accent">@{replyTo.username}</span>
+          <button type="button" onClick={onCancelReply} className="text-ink-muted hover:text-ink transition-colors">
             <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -319,13 +319,13 @@ function CommentForm({
         onChange={(e) => setContent(e.target.value)}
         placeholder={replyTo ? `Reply to ${replyTo.username}...` : "Write a comment..."}
         rows={3}
-        className="w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-3 text-sm text-[#1F2933] placeholder-[#9CA3AF] focus:outline-none focus:border-[#6B7D6D] focus:ring-1 focus:ring-[#6B7D6D] transition-colors resize-none"
+        className="w-full rounded-xl border border-line bg-card px-4 py-3 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors resize-none"
       />
       <div className="flex justify-end mt-2">
         <button
           type="submit"
           disabled={submitting || !content.trim()}
-          className="rounded-lg bg-[#6B7D6D] px-5 py-2 text-sm font-medium text-white hover:bg-[#5C6E5E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {submitting ? "Posting..." : "Post comment"}
         </button>
@@ -370,7 +370,7 @@ function CommentList({ postSlug }: { postSlug: string }) {
         <p className="text-xs text-red-500 text-center py-4">⚠ {fetchError}</p>
       )}
       {comments.length === 0 && !fetchError ? (
-        <p className="text-sm text-[#9CA3AF] text-center py-8">No comments yet. Be the first!</p>
+        <p className="text-sm text-ink-muted text-center py-8">No comments yet. Be the first!</p>
       ) : (
         <div className="space-y-1">
           {comments.map((c) => (
@@ -476,10 +476,10 @@ function CommentItem({
   };
 
   return (
-    <div className={`${depth > 0 ? "ml-6 pl-4 border-l-2 border-[#E8E7E4]" : ""}`}>
+    <div className={`${depth > 0 ? "ml-6 pl-4 border-l-2 border-line" : ""}`}>
       <div className="group py-3">
         <div className="flex items-start gap-3">
-          <div className="size-8 rounded-full bg-[#6B7D6D] flex items-center justify-center text-white font-bold text-xs shrink-0 mt-0.5">
+          <div className="size-8 rounded-full bg-accent flex items-center justify-center text-white font-bold text-xs shrink-0 mt-0.5">
             {comment.author.avatar ? (
               <img src={comment.author.avatar} alt="" className="size-full rounded-full object-cover" />
             ) : (
@@ -488,10 +488,10 @@ function CommentItem({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-sm font-semibold text-[#1F2933]">{comment.author.username}</span>
-              <span className="text-xs text-[#9CA3AF]">{formatDate(comment.createdAt)}</span>
+              <span className="text-sm font-semibold text-ink">{comment.author.username}</span>
+              <span className="text-xs text-ink-muted">{formatDate(comment.createdAt)}</span>
             </div>
-            <p className="text-sm text-[#4a5563] leading-relaxed whitespace-pre-wrap">{comment.content}</p>
+            <p className="text-sm text-ink-secondary leading-relaxed whitespace-pre-wrap">{comment.content}</p>
             <div className="flex items-center gap-3 mt-1.5">
               {/* Like (same pattern as blog like button) */}
               <button
@@ -510,7 +510,7 @@ function CommentItem({
               {token && (
                 <button
                   onClick={() => setReplying(!replying)}
-                  className="text-xs text-[#9CA3AF] hover:text-[#6B7D6D] transition-colors"
+                  className="text-xs text-ink-muted hover:text-accent transition-colors"
                 >
                   {replying ? "Cancel" : "Reply"}
                 </button>
@@ -519,7 +519,7 @@ function CommentItem({
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="text-xs text-[#9CA3AF] hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  className="text-xs text-ink-muted hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
                 >
                   {deleting ? "..." : "Delete"}
                 </button>

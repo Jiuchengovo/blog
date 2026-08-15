@@ -202,7 +202,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl px-6 pt-32 text-center">
-        <p className="text-[#9CA3AF]">Loading…</p>
+        <p className="text-ink-muted">Loading…</p>
       </div>
     );
   }
@@ -213,8 +213,8 @@ export default function AdminPage() {
   if (user.role !== "admin") {
     return (
       <div className="mx-auto max-w-7xl px-6 pt-32 pb-20 text-center">
-        <h1 className="text-3xl font-bold text-[#1F2933] mb-3">Access Denied</h1>
-        <p className="text-[#6B7280]">
+        <h1 className="text-3xl font-bold text-ink mb-3">Access Denied</h1>
+        <p className="text-ink-secondary">
           You need admin privileges to access this page.
         </p>
       </div>
@@ -228,14 +228,14 @@ export default function AdminPage() {
         <Reveal delay={100}>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933] mb-2">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink mb-2">
                 Admin
               </h1>
-              <p className="text-[#6B7280]">Manage your blog posts.</p>
+              <p className="text-ink-secondary">Manage your blog posts.</p>
             </div>
             <button
               onClick={handleNew}
-              className="rounded-xl bg-[#6B7D6D] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#5C6E5E] transition-colors"
+              className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover transition-colors"
             >
               + New Post
             </button>
@@ -251,13 +251,13 @@ export default function AdminPage() {
           )}
 
           {fetching ? (
-            <p className="text-[#9CA3AF] py-12 text-center">Loading posts…</p>
+            <p className="text-ink-muted py-12 text-center">Loading posts…</p>
           ) : posts.length === 0 ? (
-            <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-12 text-center">
-              <p className="text-[#6B7280] mb-4">No posts yet.</p>
+            <div className="rounded-2xl border border-line bg-card-alt p-12 text-center">
+              <p className="text-ink-secondary mb-4">No posts yet.</p>
               <button
                 onClick={handleNew}
-                className="text-sm font-medium text-[#6B7D6D] hover:text-[#5C6E5E] transition-colors"
+                className="text-sm font-medium text-accent hover:text-accent-hover transition-colors"
               >
                 Create your first post
               </button>
@@ -267,24 +267,24 @@ export default function AdminPage() {
               {posts.map((post) => (
                 <div
                   key={post._id}
-                  className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm hover:bg-white transition-colors"
+                  className="rounded-2xl border border-line bg-card-alt p-8 sm:p-10 shadow-sm hover:bg-card transition-colors"
                 >
                   <div className="flex items-start justify-between gap-8">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline gap-4 mb-3">
-                        <h3 className="text-xl font-semibold text-[#1F2933] truncate">
+                        <h3 className="text-xl font-semibold text-ink truncate">
                           {post.title}
                         </h3>
-                        <span className="text-base text-[#9CA3AF] shrink-0 hidden sm:inline">
+                        <span className="text-base text-ink-muted shrink-0 hidden sm:inline">
                           /{post.slug}
                         </span>
                       </div>
                       <div className="flex flex-wrap items-center gap-3 text-base mb-3">
-                        <time className="text-[#6B7280]">{post.date}</time>
+                        <time className="text-ink-secondary">{post.date}</time>
                         {post.excerpt && (
                           <>
-                            <span className="text-[#D1CEC7]">·</span>
-                            <span className="text-[#9CA3AF]">{post.excerpt}</span>
+                            <span className="text-line-soft">·</span>
+                            <span className="text-ink-muted">{post.excerpt}</span>
                           </>
                         )}
                       </div>
@@ -293,7 +293,7 @@ export default function AdminPage() {
                           {(post.tags || []).map((tag) => (
                             <span
                               key={tag}
-                              className="inline-flex rounded-full bg-[#e8e8e6] px-3 py-0.5 text-sm font-medium text-[#6B7280]"
+                              className="inline-flex rounded-full bg-chip px-3 py-0.5 text-sm font-medium text-ink-secondary"
                             >
                               #{tag}
                             </span>
@@ -304,13 +304,13 @@ export default function AdminPage() {
                     <div className="flex items-center gap-3 shrink-0">
                       <button
                         onClick={() => handleEdit(post)}
-                        className="rounded-xl border border-[#D1CEC7] bg-white px-5 py-2.5 text-sm font-medium text-[#1F2933] hover:bg-[#FAFAF8] hover:border-[#B0ACA3] transition-colors"
+                        className="rounded-xl border border-line-soft bg-card px-5 py-2.5 text-sm font-medium text-ink hover:bg-card-alt hover:border-line transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => setDeleteTarget(post)}
-                        className="rounded-xl px-3 py-2.5 text-sm text-[#9CA3AF] hover:text-red-500 hover:bg-red-50 transition-colors"
+                        className="rounded-xl px-3 py-2.5 text-sm text-ink-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/60 transition-colors"
                       >
                         <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -327,18 +327,18 @@ export default function AdminPage() {
         {/* Delete confirmation modal */}
         {deleteTarget && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-            <div className="rounded-2xl border border-[#E8E7E4] bg-white shadow-xl p-8 max-w-sm mx-4">
-              <h3 className="text-lg font-semibold text-[#1F2933] mb-2">Delete post?</h3>
-              <p className="text-sm text-[#6B7280] mb-1">
+            <div className="rounded-2xl border border-line bg-card shadow-xl p-8 max-w-sm mx-4">
+              <h3 className="text-lg font-semibold text-ink mb-2">Delete post?</h3>
+              <p className="text-sm text-ink-secondary mb-1">
                 This will permanently delete <strong>{deleteTarget.title}</strong>.
               </p>
-              <p className="text-xs text-[#9CA3AF] mb-6">
+              <p className="text-xs text-ink-muted mb-6">
                 The .md file and MongoDB record will both be removed.
               </p>
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setDeleteTarget(null)}
-                  className="rounded-xl border border-[#D1CEC7] px-4 py-2 text-sm font-medium text-[#6B7280] hover:bg-[#FAFAF8] transition-colors"
+                  className="rounded-xl border border-line-soft px-4 py-2 text-sm font-medium text-ink-secondary hover:bg-card-alt transition-colors"
                 >
                   Cancel
                 </button>
@@ -361,12 +361,12 @@ export default function AdminPage() {
     <div className="mx-auto max-w-7xl px-6 pt-28 pb-20 sm:pt-32 sm:pb-24">
       <Reveal delay={100}>
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1F2933]">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink">
             {editingSlug ? "Edit Post" : "New Post"}
           </h1>
           <button
             onClick={handleCancel}
-            className="text-sm text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
+            className="text-sm text-ink-muted hover:text-ink-secondary transition-colors"
           >
             ← Back to list
           </button>
@@ -387,17 +387,17 @@ export default function AdminPage() {
         )}
 
         {loadingEdit ? (
-          <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-12 text-center">
-            <p className="text-[#9CA3AF]">Loading post content…</p>
+          <div className="rounded-2xl border border-line bg-card-alt p-12 text-center">
+            <p className="text-ink-muted">Loading post content…</p>
           </div>
         ) : (
           <form onSubmit={handleSave} className="space-y-6">
             {/* Metadata fields */}
-            <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-8 sm:p-10 shadow-sm">
-              <h2 className="text-lg font-semibold text-[#1F2933] mb-6">Metadata</h2>
+            <div className="rounded-2xl border border-line bg-card-alt p-8 sm:p-10 shadow-sm">
+              <h2 className="text-lg font-semibold text-ink mb-6">Metadata</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <label className="block">
-                  <span className="text-sm font-medium text-[#1F2933]">Slug *</span>
+                  <span className="text-sm font-medium text-ink">Slug *</span>
                   <input
                     type="text"
                     required
@@ -405,59 +405,59 @@ export default function AdminPage() {
                     onChange={(e) => setForm({ ...form, slug: e.target.value })}
                     disabled={!!editingSlug}
                     placeholder="my-post-slug"
-                    className={`mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow ${
+                    className={`mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow ${
                       editingSlug ? "opacity-60 cursor-not-allowed" : ""
                     }`}
                   />
                   {editingSlug && (
-                    <span className="text-xs text-[#9CA3AF] mt-1">Slug cannot be changed after creation.</span>
+                    <span className="text-xs text-ink-muted mt-1">Slug cannot be changed after creation.</span>
                   )}
                 </label>
 
                 <label className="block">
-                  <span className="text-sm font-medium text-[#1F2933]">Date *</span>
+                  <span className="text-sm font-medium text-ink">Date *</span>
                   <input
                     type="date"
                     required
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
                   />
                 </label>
 
                 <label className="block sm:col-span-2">
-                  <span className="text-sm font-medium text-[#1F2933]">Title *</span>
+                  <span className="text-sm font-medium text-ink">Title *</span>
                   <input
                     type="text"
                     required
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     placeholder="Your post title"
-                    className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
                   />
                 </label>
 
                 <label className="block sm:col-span-2">
-                  <span className="text-sm font-medium text-[#1F2933]">Excerpt</span>
+                  <span className="text-sm font-medium text-ink">Excerpt</span>
                   <input
                     type="text"
                     value={form.excerpt}
                     onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
                     placeholder="A short summary shown in search results and lists"
-                    className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
                   />
                 </label>
 
                 <label className="block sm:col-span-2">
-                  <span className="text-sm font-medium text-[#1F2933]">Tags</span>
+                  <span className="text-sm font-medium text-ink">Tags</span>
                   <input
                     type="text"
                     value={form.tags}
                     onChange={(e) => setForm({ ...form, tags: e.target.value })}
                     placeholder="nextjs, react, tutorial"
-                    className="mt-1.5 block w-full rounded-xl border border-[#E8E7E4] bg-white px-4 py-2.5 text-sm text-[#1F2933] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#6B7D6D]/30 focus:border-[#6B7D6D] transition-shadow"
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-shadow"
                   />
-                  <span className="text-xs text-[#9CA3AF] mt-1">
+                  <span className="text-xs text-ink-muted mt-1">
                     Comma-separated
                   </span>
                 </label>
@@ -465,8 +465,8 @@ export default function AdminPage() {
             </div>
 
             {/* Content editor */}
-            <div className="rounded-2xl border border-[#E8E7E4] bg-[#FAFAF8] p-6 sm:p-8 shadow-sm">
-              <h2 className="text-lg font-semibold text-[#1F2933] mb-5">Content *</h2>
+            <div className="rounded-2xl border border-line bg-card-alt p-6 sm:p-8 shadow-sm">
+              <h2 className="text-lg font-semibold text-ink mb-5">Content *</h2>
               <MarkdownEditor
                 value={form.content}
                 onChange={(v) => setForm({ ...form, content: v })}
@@ -478,14 +478,14 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="rounded-xl border border-[#D1CEC7] px-5 py-2.5 text-sm font-medium text-[#6B7280] hover:bg-[#FAFAF8] transition-colors"
+                className="rounded-xl border border-line-soft px-5 py-2.5 text-sm font-medium text-ink-secondary hover:bg-card-alt transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={saving || !form.title.trim() || !form.slug.trim() || !form.content.trim()}
-                className="rounded-xl bg-[#6B7D6D] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#5C6E5E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {saving ? "Saving…" : editingSlug ? "Update Post" : "Publish Post"}
               </button>
